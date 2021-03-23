@@ -1,0 +1,30 @@
+
+.container {
+background-color: rgb(148, 148, 255);
+text-align: center;
+padding: 5%;
+height: auto;
+width: auto;
+display: block;
+}
+.hide {
+    display: none;
+}
+.show {
+    display: block;
+}
+h1 {
+    text-align: center;
+}
+p {
+   padding: 0 10% ;
+}
+
+#startGame {
+    display: block;
+    margin: 0 auto;
+}
+#highScores {
+    display: block;
+    margin: 0 auto;
+}
