@@ -7,7 +7,7 @@ var quizQuestions = [
 {
     question: "How often do you need to change your blinker fluid?",
     answers: ["Once every 2 months", "At least twice a year", "Every time you get an oil change", "Theres no such thing as blinker fluid."],
-    correctAnswer: "Theres no such thing as blinker fluid",
+    correctAnswer: "Theres no such thing as blinker fluid.",
 },
 {
     question: "If someone lifts the front of their truck's suspension, but keeps the rear suspension lower, what are they considered doing?",
