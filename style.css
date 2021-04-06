@@ -1,10 +1,14 @@
-
+body {
+    background-color: rgb(172, 200, 252);
+    height: auto;
+    width: auto;
+}
 .container {
-background-color: rgb(148, 148, 255);
+background-color: rgb(129, 129, 255);
 text-align: center;
-padding: 5%;
-height: auto;
-width: auto;
+padding: 20%;
+height: 0 auto;
+width: 0 auto;
 display: block;
 }
 .hide {
@@ -27,4 +31,10 @@ p {
 #highScores {
     display: block;
     margin: 0 auto;
+}
+.styleButton {
+    width: 500px;
+}
+.mainButton {
+    width: 100px;
 }
