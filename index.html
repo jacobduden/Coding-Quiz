@@ -14,7 +14,7 @@
         <section id="mainScreen">
             <h1>Welcome to the Coding Quiz</h1>
             <button id="startGame" class="mainButton">Start Game</button>
-            <button id="highScores" class="mainButton">High Scores</button>
+            <button id="highscore-button" class="mainButton">High Scores</button>
         </section>
         <section id="answerBtns" style="display: none">
             <h1 id="mainQuestion"></h1>
@@ -25,16 +25,28 @@
         <div id="timer" style="display: none;">
         </div>
         <div id="score" style="display: none;">
-            
+
         </div>
         <section id="high-scores" style="display: none;">
             <h1>Log your score!</h1>
-            <label for="scoreInput">Enter Your Intials: </label>
-            <input type="text" name="scoreInput" value=" ">
+            <form>
+                <label for="scoreInput">Enter Your Intials: </label>
+                <input type="text" name="scoreInput" id="userScoreInput">
+                <input type="submit" value="Submit" class="mainButton" id="userSubmit">
+            </form>
+        </section>
+        <section id="highscorePage" style="display: none;">
+            <h1>Your Highscores!</h1>
+            <div id="highscoreBox">
+                <ul id="highscoreAppend">
+                    
+                </ul>
+            </div>
         </section>
     </div>
     <script rel="text/javascript" src="script.js"></script>
     <script rel="text/javascript" src="questions.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </body>
 
 </html>

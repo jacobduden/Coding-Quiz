@@ -7,6 +7,8 @@ var answerButton = document.querySelector("#answerBtns");
 var answersEl = document.getElementById("answers");
 var highScoreEl = document.getElementById("high-scores");
 var feedBack = document.getElementById("feed-back");
+var highScoreBtn = document.getElementById("highscore-button");
+
 
 var timerCount = 90;
 var score = 0;
@@ -23,10 +25,9 @@ var startQuiz = function () {
         timeRemaining.style.display = "block";
         replaceQ();
         time();
-        return(endGame);
     });
     if (timerCount <= 0) {
-        return startQuiz;
+        return
     }
 }
 startQuiz();
@@ -38,8 +39,8 @@ var time = function () {
             clearInterval(timer);
             endGame();
             feedBack.style.display = "block"
-            feedBack.textContent = "Your time ran out!"
-            return(time);
+            feedBack.textContent = "Game Over!"
+            return
         }
     }, 1000);
 }
@@ -48,7 +49,9 @@ var replaceQ = function () {
 
     var currentQuestion = quizQuestions[questionIndex];
     if (currentQuestion === undefined) {
-      endGame();
+        timerCount = 0;
+        currentScoreEl.textContent = score + "/4";
+        return
     }
     var titleEl = document.getElementById("mainQuestion");
     titleEl.textContent = currentQuestion.question;
@@ -59,8 +62,11 @@ var replaceQ = function () {
         choices.className = "styleButton";
         choices.textContent = currentAnswer;
         answersEl.append(choices)
+
+
+
         if (timerCount <= 0) {
-            endGame();
+            return
         }
         choices.addEventListener("click", function () {
             if (currentAnswer === quizQuestions[questionIndex].correctAnswer) {
@@ -68,8 +74,10 @@ var replaceQ = function () {
                 score++;
                 replaceQ();
                 feedBack.style.display = "none"
-                localStorage.setItem("highscore", JSON.stringify(score))
-                console.log(score)
+                const getScore = JSON.parse(localStorage.getItem("highscore")) || [];
+                const scoreValue = score;
+                getScore.push(scoreValue);
+                localStorage.setItem("highscore", JSON.stringify(getScore))
             }
             else {
                 timerCount -= 15;
@@ -79,17 +87,44 @@ var replaceQ = function () {
         })
     });
 }
+// 
+var highScorePg = document.getElementById("highscorePage");
+var userScoreIp = document.getElementById("userScoreInput");
+var userSubmitBtn = document.getElementById("userSubmit");
+
 var endGame = function () {
     timerCount = 90;
     highScoreEl.style.display = "block";
     answerButton.style.display = "none";
-    currentScoreEl.style.display = "none";
     timeRemaining.style.display = "none";
-    var restartBtn = document.createElement("button");
-    restartBtn.textContent = "Retake Quiz"
-    highScoreEl.append(restartBtn);
-    restartBtn.addEventListener("click", function () {
-        location.reload();
+
+    userSubmitBtn.addEventListener("click", function (e) {
+        e.preventDefault()
+        const userInitials = JSON.parse(localStorage.getItem("initials")) || [];
+        const initialValue = userScoreIp.value;
+        userInitials.push(initialValue);
+        localStorage.setItem("initials", JSON.stringify(userInitials));
+
+
     })
+    // var restartBtn = document.createElement("button");
+    // restartBtn.className = "retakeButton";
+    // restartBtn.textContent = "Retake Quiz"
+    // highScoreEl.append(restartBtn);
+    // restartBtn.addEventListener("click", function () {
+    //     location.reload();
+    // })
 }
+
+
+var highscoreScreen = highScoreBtn.addEventListener("click", function () {
+    const getScore = JSON.parse(localStorage.getItem("highscore"));
+    const userInitials = JSON.parse(localStorage.getItem("initials"));
+    mainScreenEl.style.display = "none";
+    highScorePg.style.display = "block";
+    for (var i = 0; i < userInitials.length; i++) {
+        $("#highscoreAppend").append("<li>" + userInitials[i] + "|" + getScore[i] + "</li>")
+        // console.log(scoreResult)
+    }
+})
 
