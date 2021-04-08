@@ -13,7 +13,7 @@ var timerCount = 90;
 var score = 0;
 var questionIndex = 0;
 
-// start quiz game
+// start quiz game screen
 var startQuiz = function () {
     startBtn.addEventListener("click", function () {
         mainScreenEl.style.display = "none";
@@ -44,7 +44,6 @@ var time = function () {
 // 
 // loads new questions onto page
 var replaceQ = function () {
-
     var currentQuestion = quizQuestions[questionIndex];
     if (currentQuestion === undefined) {
         timerCount = 0;
@@ -84,6 +83,7 @@ var userScoreIp = document.getElementById("userScoreInput");
 var userSubmitBtn = document.getElementById("userSubmit");
 let getScore;
 let scoreList = [];
+//end of game screen with user submittion screen
 var endGame = function () {
     timerCount = 90;
     highScoreEl.style.display = "block";
@@ -96,6 +96,7 @@ var endGame = function () {
         if (getScore === null) {
             getScore = [];
         };
+
         let scoreValue = localStorage.getItem("currentScore");
         let initials = userScoreIp.value;
         getScore.push({ name: initials, cScore: scoreValue });
@@ -103,12 +104,13 @@ var endGame = function () {
     })
 }
 
+//Displays highscores page
 var highscoreScreen = highScoreBtn.addEventListener("click", function () {
     mainScreenEl.style.display = "none";
     highScorePg.style.display = "block";
     loadLocal();
 })
-
+// loads localStorage onto Highscores page
 var loadLocal = function () {
     getScore = JSON.parse(localStorage.getItem("highscore"));
     if (getScore === null) {
@@ -117,17 +119,32 @@ var loadLocal = function () {
     let scoreValue = localStorage.getItem("currentScore");
     let initials = userScoreIp.value;
     getScore.push({ name: initials, cScore: scoreValue });
-    // localStorage.setItem("highscore", JSON.stringify(getScore));
     for (var i = 0; i < getScore.length; i++) {
-        $("#highscoreAppend").append("<p>" + getScore[i].name + "|" + getScore[i].cScore + "</p>");
+        //appends localStorage values to page
+        $("#highscoreAppend").append("<h1>" + getScore[i].name + "|" + getScore[i].cScore + "</h1>");
+        console.log(getScore)
+        if (getScore[i].cScore === null){
+            $("#highscoreAppend").empty();
+        }
         //only add non duplicated numbers
         if (scoreList.indexOf(getScore[i].cScore) === -1 && getScore[i].cScore != null) {
             scoreList.push(getScore[i]);
+            getScore.pop();
         }
+        
         scoreList.sort((a, b) => a.cScore - b.cScore);
     };
-//     for (var j = scoreList.length - 1; j >= 0; j--) {
-//         $("#highscoreAppend").append("<p>" + scoreList[j].name + "|" + scoreList[j].cScore + "</p>");
-//     }
-// }
 }
+//button that clears local storage
+var clearLocalBtn = document.getElementById("clearStorage");
+clearLocalBtn.addEventListener("click", function () {
+    localStorage.clear();
+    location.reload();
+    
+})
+
+//Takes user back to homescreen
+var homeScreenBtn = document.getElementById("startScreen");
+homeScreenBtn.addEventListener("click", function(){
+    location.reload();
+})
