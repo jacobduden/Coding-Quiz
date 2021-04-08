@@ -9,12 +9,9 @@ var highScoreEl = document.getElementById("high-scores");
 var feedBack = document.getElementById("feed-back");
 var highScoreBtn = document.getElementById("highscore-button");
 
-
 var timerCount = 90;
 var score = 0;
 var questionIndex = 0;
-
-
 
 // start quiz game
 var startQuiz = function () {
@@ -63,9 +60,6 @@ var replaceQ = function () {
         choices.className = "styleButton";
         choices.textContent = currentAnswer;
         answersEl.append(choices)
-
-
-
         if (timerCount <= 0) {
             return
         }
@@ -76,14 +70,6 @@ var replaceQ = function () {
                 replaceQ();
                 feedBack.style.display = "none"
                 localStorage.setItem("currentScore", score);
-                // const getScore = JSON.parse(localStorage.getItem("highscore")) || [];
-
-                // // const scoreValue = score
-                // const scoreResult = {
-                //     score: score
-                // }
-                // getScore.push(scoreResult);
-                // localStorage.setItem("highscore", JSON.stringify(getScore))
             }
             else {
                 timerCount -= 15;
@@ -93,7 +79,6 @@ var replaceQ = function () {
         })
     });
 }
-// 
 var highScorePg = document.getElementById("highscorePage");
 var userScoreIp = document.getElementById("userScoreInput");
 var userSubmitBtn = document.getElementById("userSubmit");
@@ -106,68 +91,41 @@ var endGame = function () {
     timeRemaining.style.display = "none";
 
     // submit button for local storage
-    userSubmitBtn.addEventListener("click", function (e) {
-        e.preventDefault()
-
+    userSubmitBtn.addEventListener("click", function () {
         getScore = JSON.parse(localStorage.getItem("highscore"));
         if (getScore === null) {
             getScore = [];
         };
         let scoreValue = localStorage.getItem("currentScore");
         let initials = userScoreIp.value;
-        getScore.push({ name: initials, currentScore: scoreValue });
-        localStorage.setItem("highscore", JSON.stringify(getScore))
-        for (var i = 0; i < getScore.length; i++) {
-
-            //only add non duplicated numbers
-            if (scoreList.indexOf(getScore[i].currentScore) === -1 && getScore[i].currentScore != null) {
-                scoreList.push(getScore[i].currentScore);
-            }
-            scoreList.sort();
-        };
-        for (var j = scoreList.length - 1; j >= 0; j--) {
-            for (var k = 0; k < getScore.length; k++) {
-                if (getScore[k].currentScore === scoreList[j]) {
-                    $("#highscoreAppend").append("<p>" + getScore[k] + "</p>");
-
-                }
-            }
-        }
-
-
-
-
-
-        // const userInitials = JSON.parse(localStorage.getItem("initials")) || [];
-        // const initialValue = userScoreIp.value;
-        // let initialResult = {
-        //     initials: initialValue
-        // };
-        // userInitials.push(initialResult);
-        // localStorage.setItem("initials", JSON.stringify(userInitials));
-
-
+        getScore.push({ name: initials, cScore: scoreValue });
+        localStorage.setItem("highscore", JSON.stringify(getScore));
     })
-    // var restartBtn = document.createElement("button");
-    // restartBtn.className = "retakeButton";
-    // restartBtn.textContent = "Retake Quiz"
-    // highScoreEl.append(restartBtn);
-    // restartBtn.addEventListener("click", function () {
-    //     location.reload();
-    // })
 }
 
-
 var highscoreScreen = highScoreBtn.addEventListener("click", function () {
-    // const getScore = JSON.parse(localStorage.getItem("highscore")) || [];
-    // const userInitials = JSON.parse(localStorage.getItem("initials")) || [];
     mainScreenEl.style.display = "none";
     highScorePg.style.display = "block";
-    
-    // for (var i = 0; i < userInitials.length; i++) {
-    //    <li>" + userInitials[i] + "|" + getScore + "</li>")
-    // console.log(scoreResult)
-
-    // }
 })
 
+var loadLocal = function () {
+    getScore = JSON.parse(localStorage.getItem("highscore"));
+    if (getScore === null) {
+        getScore = [];
+    };
+    let scoreValue = localStorage.getItem("currentScore");
+    let initials = userScoreIp.value;
+    getScore.push({ name: initials, cScore: scoreValue });
+    localStorage.setItem("highscore", JSON.stringify(getScore));
+    for (var i = 0; i < getScore.length; i++) {
+        //only add non duplicated numbers
+        if (scoreList.indexOf(getScore[i].cScore) === -1 && getScore[i].cScore != null) {
+            scoreList.push(getScore[i]);
+        }
+        scoreList.sort((a, b) => a.cScore - b.cScore);
+    };
+    for (var j = scoreList.length - 1; j >= 0; j--) {
+        $("#highscoreAppend").append("<p>" + scoreList[j].name + "|" + scoreList[j].cScore + "</p>");
+    }
+}
+loadLocal();
