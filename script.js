@@ -44,6 +44,7 @@ var time = function () {
         }
     }, 1000);
 }
+// 
 // loads new questions onto page
 var replaceQ = function () {
 
@@ -74,10 +75,15 @@ var replaceQ = function () {
                 score++;
                 replaceQ();
                 feedBack.style.display = "none"
-                const getScore = JSON.parse(localStorage.getItem("highscore")) || [];
-                const scoreValue = score;
-                getScore.push(scoreValue);
-                localStorage.setItem("highscore", JSON.stringify(getScore))
+                localStorage.setItem("currentScore", score);
+                // const getScore = JSON.parse(localStorage.getItem("highscore")) || [];
+
+                // // const scoreValue = score
+                // const scoreResult = {
+                //     score: score
+                // }
+                // getScore.push(scoreResult);
+                // localStorage.setItem("highscore", JSON.stringify(getScore))
             }
             else {
                 timerCount -= 15;
@@ -91,19 +97,54 @@ var replaceQ = function () {
 var highScorePg = document.getElementById("highscorePage");
 var userScoreIp = document.getElementById("userScoreInput");
 var userSubmitBtn = document.getElementById("userSubmit");
-
+let getScore;
+let scoreList = [];
 var endGame = function () {
     timerCount = 90;
     highScoreEl.style.display = "block";
     answerButton.style.display = "none";
     timeRemaining.style.display = "none";
 
+    // submit button for local storage
     userSubmitBtn.addEventListener("click", function (e) {
         e.preventDefault()
-        const userInitials = JSON.parse(localStorage.getItem("initials")) || [];
-        const initialValue = userScoreIp.value;
-        userInitials.push(initialValue);
-        localStorage.setItem("initials", JSON.stringify(userInitials));
+
+        getScore = JSON.parse(localStorage.getItem("highscore"));
+        if (getScore === null) {
+            getScore = [];
+        };
+        let scoreValue = localStorage.getItem("currentScore");
+        let initials = userScoreIp.value;
+        getScore.push({ name: initials, currentScore: scoreValue });
+        localStorage.setItem("highscore", JSON.stringify(getScore))
+        for (var i = 0; i < getScore.length; i++) {
+
+            //only add non duplicated numbers
+            if (scoreList.indexOf(getScore[i].currentScore) === -1 && getScore[i].currentScore != null) {
+                scoreList.push(getScore[i].currentScore);
+            }
+            scoreList.sort();
+        };
+        for (var j = scoreList.length - 1; j >= 0; j--) {
+            for (var k = 0; k < getScore.length; k++) {
+                if (getScore[k].currentScore === scoreList[j]) {
+                    $("#highscoreAppend").append("<p>" + getScore[k] + "</p>");
+
+                }
+            }
+        }
+
+
+
+
+
+        // const userInitials = JSON.parse(localStorage.getItem("initials")) || [];
+        // const initialValue = userScoreIp.value;
+        // let initialResult = {
+        //     initials: initialValue
+        // };
+        // userInitials.push(initialResult);
+        // localStorage.setItem("initials", JSON.stringify(userInitials));
 
 
     })
@@ -118,13 +159,15 @@ var endGame = function () {
 
 
 var highscoreScreen = highScoreBtn.addEventListener("click", function () {
-    const getScore = JSON.parse(localStorage.getItem("highscore"));
-    const userInitials = JSON.parse(localStorage.getItem("initials"));
+    // const getScore = JSON.parse(localStorage.getItem("highscore")) || [];
+    // const userInitials = JSON.parse(localStorage.getItem("initials")) || [];
     mainScreenEl.style.display = "none";
     highScorePg.style.display = "block";
-    for (var i = 0; i < userInitials.length; i++) {
-        $("#highscoreAppend").append("<li>" + userInitials[i] + "|" + getScore[i] + "</li>")
-        // console.log(scoreResult)
-    }
+    
+    // for (var i = 0; i < userInitials.length; i++) {
+    //    <li>" + userInitials[i] + "|" + getScore + "</li>")
+    // console.log(scoreResult)
+
+    // }
 })
 
