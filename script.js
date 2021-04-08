@@ -106,6 +106,7 @@ var endGame = function () {
 var highscoreScreen = highScoreBtn.addEventListener("click", function () {
     mainScreenEl.style.display = "none";
     highScorePg.style.display = "block";
+    loadLocal();
 })
 
 var loadLocal = function () {
@@ -116,16 +117,17 @@ var loadLocal = function () {
     let scoreValue = localStorage.getItem("currentScore");
     let initials = userScoreIp.value;
     getScore.push({ name: initials, cScore: scoreValue });
-    localStorage.setItem("highscore", JSON.stringify(getScore));
+    // localStorage.setItem("highscore", JSON.stringify(getScore));
     for (var i = 0; i < getScore.length; i++) {
+        $("#highscoreAppend").append("<p>" + getScore[i].name + "|" + getScore[i].cScore + "</p>");
         //only add non duplicated numbers
         if (scoreList.indexOf(getScore[i].cScore) === -1 && getScore[i].cScore != null) {
             scoreList.push(getScore[i]);
         }
         scoreList.sort((a, b) => a.cScore - b.cScore);
     };
-    for (var j = scoreList.length - 1; j >= 0; j--) {
-        $("#highscoreAppend").append("<p>" + scoreList[j].name + "|" + scoreList[j].cScore + "</p>");
-    }
+//     for (var j = scoreList.length - 1; j >= 0; j--) {
+//         $("#highscoreAppend").append("<p>" + scoreList[j].name + "|" + scoreList[j].cScore + "</p>");
+//     }
+// }
 }
-loadLocal();
